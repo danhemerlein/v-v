@@ -1,0 +1,10 @@
+theme:
+  password: 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
+  theme_id: "129575092463"
+  store: dan-hemerlein-code-challenge.myshopify.com
+  ignore_files:
+    - settings_data.json
+    - src
+    - node_modules
+    - package.json
+    - package-lock.json
