@@ -34,6 +34,7 @@
 		"react": "^17.0.2",
 		"react-dom": "^17.0.2",
 		"read-yaml": "^1.1.0",
+		"styled-components": "^5.3.3",
 		"swiper": "^6.6.1",
 		"terser-webpack-plugin": "^2.3.5",
 		"vanilla-sharing": "^6.0.5",

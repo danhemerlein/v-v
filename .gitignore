@@ -5,3 +5,7 @@ src/config/settings_data.json
 cypress.json
 bs-config.js
 .DS_Store
+
+.eslintrc.js
+.editorconfig
+.stylelintrc

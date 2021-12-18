@@ -1,11 +1,21 @@
+import React from 'react';
+import styled from 'styled-components';
+import ProductCard from './ProductCard';
 
-import React from 'react'
+const CollectionContainer = styled.section`
+  display: flex;
+  flex-wrap: wrap;
+`;
 
-const PLP = ({ }) => {
+const PLP = ({ products }) => {
+  console.log(products);
   return (
-    <>
-    plp plp plp
-    </>
-  )
-}
+    <CollectionContainer>
+      {products.map((product) => {
+        return <ProductCard key={product.id} product={product} />;
+      })}
+    </CollectionContainer>
+  );
+};
+
 export default PLP;
