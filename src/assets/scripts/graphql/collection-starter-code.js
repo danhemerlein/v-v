@@ -20,6 +20,7 @@ export default async function getAllProducts(collectionHandle) {
                       node {
                         id
                         price
+                        title
                         compareAtPrice
                         availableForSale
                         image {
@@ -33,14 +34,16 @@ export default async function getAllProducts(collectionHandle) {
             }
           }
         }
-        `
+        `;
   const { data } = await sendQuery(query);
   if (data && data.data) {
-    const products = data?.data?.collectionByHandle?.products?.edges.map(({node}) => {
-      const product = {...node};
-      product.variants = node.variants.edges.map(({node}) => ({...node}));
-      return product;
-    });
+    const products = data?.data?.collectionByHandle?.products?.edges.map(
+      ({ node }) => {
+        const product = { ...node };
+        product.variants = node.variants.edges.map(({ node }) => ({ ...node }));
+        return product;
+      }
+    );
     return products;
   }
   return [];
