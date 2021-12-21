@@ -1,6 +1,6 @@
 import { Form, Formik } from 'formik';
 import _ from 'lodash';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { above, remHelper } from '../styles/utilities';
 import ColorSwatch from './ColorSwatch';
@@ -37,11 +37,10 @@ const CustomSelectContainer = styled.div`
 
 const ProductCard = ({ product }) => {
   const [activeVariant, setActiveVariant] = useState(product.variants[0]);
-  const [hasColors, setHasColors] = useState(false);
-  const [hasSize, setHasSize] = useState(false);
-  const [hasFit, setHasFit] = useState(false);
-  const [hasWaist, setHasWaist] = useState(false);
-  const [hasLength, setHasLength] = useState(false);
+
+  const [productOptions, setProductOptions] = useState(
+    Object.keys(product.options)
+  );
 
   const selectVariant = (newBuild) => {
     const newVariant = product.variants.filter((variant) => {
@@ -53,32 +52,18 @@ const ProductCard = ({ product }) => {
     setActiveVariant(newVariant[0]);
   };
 
-  const { options } = product;
-
-  useEffect(() => {
-    const colorOption = Object.keys(options).includes('Color');
-    const sizeOption = Object.keys(options).includes('Size');
-    const fitOption = Object.keys(options).includes('Fit');
-    const waistOption = Object.keys(options).includes('Waist');
-    const lengthOption = Object.keys(options).includes('Length');
-
-    setHasSize(sizeOption);
-    setHasFit(fitOption);
-    setHasWaist(waistOption);
-    setHasLength(lengthOption);
-    setHasColors(colorOption);
-  }, []);
+  const { id, title, variants } = product;
 
   return (
     <Card>
-      <Image src={activeVariant.image.src} alt={product.title} />
+      <Image src={activeVariant.image.src} alt={title} />
 
-      <TitleParagraph>{product.title}</TitleParagraph>
+      <TitleParagraph>{title}</TitleParagraph>
 
       <ProductPrice variant={activeVariant} />
 
       <Formik
-        initialValues={product.variants[0].selectedOptions}
+        initialValues={variants[0].selectedOptions}
         onSubmit={(values, { setSubmitting }) => {
           selectVariant(values);
           setSubmitting(false);
@@ -96,47 +81,33 @@ const ProductCard = ({ product }) => {
           };
 
           return (
-            <StyledForm id={product.id}>
-              {hasColors && (
-                <ColorSwatch
-                  selectColor={selectColor}
-                  activeVariant={activeVariant}
-                  values={product.options.Color}
-                />
-              )}
+            <StyledForm id={id}>
+              {productOptions.map((option) => {
+                if (option === 'Color') {
+                  return (
+                    <ColorSwatch
+                      key={option}
+                      selectColor={selectColor}
+                      activeVariant={activeVariant}
+                      values={product.options.Color}
+                    />
+                  );
+                }
+              })}
 
               <CustomSelectContainer>
-                {hasSize && (
-                  <VariantSelect
-                    updateValues={customSelectChangeHandler}
-                    values={product.options.Size}
-                    value="Size"
-                  />
-                )}
-
-                {hasWaist && (
-                  <VariantSelect
-                    updateValues={customSelectChangeHandler}
-                    values={product.options.Waist}
-                    value="Waist"
-                  />
-                )}
-
-                {hasLength && (
-                  <VariantSelect
-                    updateValues={customSelectChangeHandler}
-                    values={product.options.Length}
-                    value="Length"
-                  />
-                )}
-
-                {hasFit && (
-                  <VariantSelect
-                    updateValues={customSelectChangeHandler}
-                    values={product.options.Fit}
-                    value="Fit"
-                  />
-                )}
+                {productOptions.map((option) => {
+                  if (option !== 'Color') {
+                    return (
+                      <VariantSelect
+                        key={option}
+                        updateValues={customSelectChangeHandler}
+                        values={product.options[option]}
+                        value={option}
+                      />
+                    );
+                  }
+                })}
 
                 {/* <pre>{JSON.stringify(values, null, 2)}</pre>
 
