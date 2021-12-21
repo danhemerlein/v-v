@@ -24,6 +24,7 @@
 		"axios": "^0.19.2",
 		"body-scroll-lock": "^2.7.1",
 		"chalk": "^2.4.1",
+		"formik": "^2.2.9",
 		"fs-extra": "^8.1.0",
 		"glob": "^7.1.6",
 		"html-minifier": "^4.0.0",

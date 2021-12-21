@@ -20,11 +20,14 @@ export default async function getAllProducts(collectionHandle) {
                       node {
                         id
                         price
-                        title
                         compareAtPrice
                         availableForSale
                         image {
                           src
+                        }
+                        selectedOptions {
+                          name
+                          value
                         }
                       }
                     }
@@ -40,10 +43,33 @@ export default async function getAllProducts(collectionHandle) {
     const products = data?.data?.collectionByHandle?.products?.edges.map(
       ({ node }) => {
         const product = { ...node };
+
         product.variants = node.variants.edges.map(({ node }) => ({ ...node }));
+
+        const optionsDict = {};
+
+        product.options.map((option) => {
+          optionsDict[option.name] = option.values;
+        });
+
+        product.options = optionsDict;
+
+        product.variants.map((variant) => {
+          const options = variant.selectedOptions;
+
+          const dict = {};
+
+          options.map((vari) => {
+            dict[vari.name] = vari.value;
+          });
+
+          variant.selectedOptions = dict;
+        });
+
         return product;
       }
     );
+
     return products;
   }
   return [];

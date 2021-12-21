@@ -1,22 +1,69 @@
-import React from 'react';
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { COLORS, remHelper } from '../styles/utilities';
 
-const ColorSwatch = ({ productOptions }) => {
-  const colorOption = productOptions.filter((option) => {
-    return option.name === 'Color';
-  });
+const ColorSwatch = ({ values, activeVariant, handleSelectColor }) => {
+  const [activeColor, setActiveColor] = useState(
+    activeVariant.selectedOptions.Color
+  );
 
-  console.log(colorOption);
+  const SwatchContainer = styled.ul`
+    display: flex;
+    list-style: none;
+    justify-content: center;
+  `;
 
-  const { values } = colorOption[0];
+  const ColorLabel = styled.label`
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    margin: ${remHelper[8]};
+  `;
 
-  console.log(values);
+  const DefaultInput = styled.input`
+    opacity: 0;
+    width: 0;
+    height: 0;
+  `;
+
+  const CustomInput = styled.div`
+    position: relative;
+    width: ${remHelper[16]};
+    height: ${remHelper[16]};
+    border-radius: 100%;
+    background: ${({ color }) => COLORS[color]} no-repeat;
+
+    ${({ isSelected, color }) =>
+      isSelected &&
+      `
+        box-shadow: 0 0 0 2px white, 0 0 0 4px ${COLORS[color]};
+      `}
+  `;
 
   return (
-    <>
+    <SwatchContainer>
       {values.map((value) => {
-        return <p>{value}</p>;
+        return (
+          <li key={value}>
+            <ColorLabel
+              htmlFor={value}
+              onClick={() => handleSelectColor(value)}
+              isSelected={activeColor === value}
+            >
+              <DefaultInput
+                type="radio"
+                name={value}
+                id={value}
+                defaultChecked={activeColor === value}
+                aria-checked={activeColor === value}
+              />
+
+              <CustomInput color={value} isSelected={activeColor === value} />
+            </ColorLabel>
+          </li>
+        );
       })}
-    </>
+    </SwatchContainer>
   );
 };
 export default ColorSwatch;

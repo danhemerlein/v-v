@@ -9,13 +9,12 @@ const Wrapper = styled.main`
 
 const ProductGrid = styled.ul`
   list-style: none;
-
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   column-gap: ${remHelper[16]};
 
   ${above.mobile`
-    grid-template-columns: repeat(3, 1fr)
+    grid-template-columns: repeat(3, 1fr);
   `};
 `;
 
