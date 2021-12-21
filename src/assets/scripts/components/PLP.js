@@ -126,14 +126,14 @@ const PLP = ({ products, collection }) => {
     }
   };
 
-  console.log('active products', activeProducts);
+  const { image, title } = collection;
 
   return (
     <Wrapper>
-      <Hero src={collection.image.src}>
+      <Hero src={image.src}>
         <Headline>
           &nbsp;
-          {collection.title}
+          {title}
           &nbsp;
         </Headline>
       </Hero>
