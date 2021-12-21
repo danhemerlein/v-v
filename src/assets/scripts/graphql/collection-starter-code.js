@@ -54,8 +54,12 @@ export default async function getAllProducts(collectionHandle) {
 
         product.options = optionsDict;
 
+        let prices = [];
+
         product.variants.map((variant) => {
           const options = variant.selectedOptions;
+          const price = variant.price;
+          prices.push(price);
 
           const dict = {};
 
@@ -65,6 +69,11 @@ export default async function getAllProducts(collectionHandle) {
 
           variant.selectedOptions = dict;
         });
+
+        product.priceRange = [
+          prices.sort()[0],
+          prices.sort()[prices.sort().length - 1],
+        ];
 
         return product;
       }

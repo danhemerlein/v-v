@@ -1,7 +1,7 @@
-import { Field } from 'formik';
 import React from 'react';
 import styled from 'styled-components';
 import { above, remHelper } from '../styles/utilities';
+import Select from './Select';
 
 const Container = styled.div`
   margin-top: ${remHelper[8]};
@@ -18,12 +18,15 @@ const StyledLabel = styled.label`
   margin-bottom: ${remHelper[4]};
 `;
 
-const CustomSelect = ({ values, updateValues, value }) => {
+const StyledSelect = styled(Select)`
+  padding: ${remHelper[4]};
+`;
+
+const VarientSelect = ({ values, updateValues, value }) => {
   return (
     <Container>
       <StyledLabel htmlFor={value}>{value.toLowerCase()}</StyledLabel>
-      <Field
-        as="select"
+      <StyledSelect
         name={value}
         id={value}
         onChange={(e) => updateValues(e, value)}
@@ -37,8 +40,9 @@ const CustomSelect = ({ values, updateValues, value }) => {
             </option>
           );
         })}
-      </Field>
+      </StyledSelect>
     </Container>
   );
 };
-export default CustomSelect;
+
+export default VarientSelect;

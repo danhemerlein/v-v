@@ -4,8 +4,8 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { above, remHelper } from '../styles/utilities';
 import ColorSwatch from './ColorSwatch';
-import CustomSelect from './CustomSelect';
 import ProductPrice from './ProductPrice';
+import VariantSelect from './VariantSelect';
 
 const Card = styled.li`
   margin-top: ${remHelper[16]};
@@ -115,7 +115,7 @@ const ProductCard = ({ product }) => {
 
               <CustomSelectContainer>
                 {hasSize && (
-                  <CustomSelect
+                  <VariantSelect
                     updateValues={customSelectChangeHandler}
                     values={product.options.Size}
                     value="Size"
@@ -123,7 +123,7 @@ const ProductCard = ({ product }) => {
                 )}
 
                 {hasWaist && (
-                  <CustomSelect
+                  <VariantSelect
                     updateValues={customSelectChangeHandler}
                     values={product.options.Waist}
                     value="Waist"
@@ -131,7 +131,7 @@ const ProductCard = ({ product }) => {
                 )}
 
                 {hasLength && (
-                  <CustomSelect
+                  <VariantSelect
                     updateValues={customSelectChangeHandler}
                     values={product.options.Length}
                     value="Length"
@@ -139,16 +139,18 @@ const ProductCard = ({ product }) => {
                 )}
 
                 {hasFit && (
-                  <CustomSelect
+                  <VariantSelect
                     updateValues={customSelectChangeHandler}
                     values={product.options.Fit}
                     value="Fit"
                   />
                 )}
-                {/* <pre>{JSON.stringify(values, null, 2)}</pre>
-              <pre>
-                {JSON.stringify(activeVariant.selectedOptions, null, 2)}
-              </pre> */}
+
+                <pre>{JSON.stringify(values, null, 2)}</pre>
+
+                <pre>
+                  {JSON.stringify(activeVariant.selectedOptions, null, 2)}
+                </pre>
               </CustomSelectContainer>
             </StyledForm>
           );
