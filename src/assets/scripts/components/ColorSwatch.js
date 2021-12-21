@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { COLORS, remHelper } from '../styles/utilities';
+import { above, COLORS, remHelper } from '../styles/utilities';
 
 const ColorSwatch = ({ values, activeVariant, selectColor }) => {
   const [activeColor, setActiveColor] = useState('');
@@ -13,6 +13,8 @@ const ColorSwatch = ({ values, activeVariant, selectColor }) => {
     display: flex;
     list-style: none;
     justify-content: center;
+    width: 100%;
+    flex-wrap: wrap;
   `;
 
   const ColorLabel = styled.label`
@@ -30,10 +32,15 @@ const ColorSwatch = ({ values, activeVariant, selectColor }) => {
 
   const CustomInput = styled.div`
     position: relative;
-    width: ${remHelper[16]};
-    height: ${remHelper[16]};
+    width: ${remHelper[8]};
+    height: ${remHelper[8]};
     border-radius: 100%;
     background: ${({ color }) => COLORS[color]} no-repeat;
+
+    ${above.mobile`
+      width: ${remHelper[16]};
+      height: ${remHelper[16]};
+    `};
 
     ${({ isSelected, color }) =>
       isSelected &&

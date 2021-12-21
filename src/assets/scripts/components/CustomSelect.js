@@ -28,6 +28,8 @@ const CustomSelect = ({ values, updateValues, value }) => {
         id={value}
         onChange={(e) => updateValues(e, value)}
       >
+        <option value="">{value.toLowerCase()}</option>
+
         {values.map((val) => {
           return (
             <option key={val} value={val}>
