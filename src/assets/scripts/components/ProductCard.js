@@ -1,10 +1,11 @@
+import { Form, Formik } from 'formik';
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { remHelper } from '../styles/utilities';
+import { above, remHelper } from '../styles/utilities';
 import ColorSwatch from './ColorSwatch';
+import CustomSelect from './CustomSelect';
 import ProductPrice from './ProductPrice';
-import SizeSelector from './SizeSelector';
 
 const Card = styled.li`
   margin-top: ${remHelper[16]};
@@ -19,13 +20,23 @@ const TitleParagraph = styled.p`
   text-align: center;
 `;
 
-const getOption = (arr, str) => {
-  return arr.map((option) => option.name === str).includes(true);
-};
+const StyledForm = styled(Form)`
+  display: flex;
+  flex-direction: column;
+`;
+
+const CustomSelectContainer = styled.div`
+  flex-direction: column;
+  display: flex;
+  justify-content: space-around;
+
+  ${above.mobile`
+    flex-direction: row;
+  `};
+`;
 
 const ProductCard = ({ product }) => {
   const [activeVariant, setActiveVariant] = useState(product.variants[0]);
-  const [buildVariant, setBuildVariant] = useState({});
   const [hasColors, setHasColors] = useState(false);
   const [hasSize, setHasSize] = useState(false);
   const [hasFit, setHasFit] = useState(false);
@@ -33,16 +44,13 @@ const ProductCard = ({ product }) => {
   const [hasLength, setHasLength] = useState(false);
 
   const selectVariant = (newBuild) => {
-    console.log(newBuild);
-
-    const newVariant = product.variants.map((variant) => {
-      _.isEqual(newBuild, variant.selectVariant);
+    const newVariant = product.variants.filter((variant) => {
+      if (_.isEqual(newBuild, variant.selectedOptions)) {
+        return variant;
+      }
     });
 
-    setBuildVariant(newBuild);
-
-    console.log(newVariant);
-    // return newVariant;
+    setActiveVariant(newVariant[0]);
   };
 
   const { options } = product;
@@ -61,27 +69,6 @@ const ProductCard = ({ product }) => {
     setHasColors(colorOption);
   }, []);
 
-  const handleSelectColor = (color) => {
-    let dict = {};
-
-    console.log(buildVariant.Size);
-
-    if (buildVariant.Size) {
-      dict = {
-        ...buildVariant,
-        Size: 'S',
-        Color: color,
-      };
-    } else {
-      dict = {
-        ...buildVariant,
-        Color: color,
-      };
-    }
-
-    selectVariant(dict);
-  };
-
   return (
     <Card>
       <Image src={activeVariant.image.src} alt={product.title} />
@@ -90,20 +77,83 @@ const ProductCard = ({ product }) => {
 
       <ProductPrice variant={activeVariant} />
 
-      {hasColors && (
-        <ColorSwatch
-          handleSelectColor={handleSelectColor}
-          activeVariant={activeVariant}
-          values={product.options.Color}
-        />
-      )}
+      <Formik
+        initialValues={product.variants[0].selectedOptions}
+        // validationSchema={schema[0]}
+        onSubmit={(values, { setSubmitting }) => {
+          selectVariant(values);
+          setSubmitting(false);
+        }}
+      >
+        {({
+          values,
+          errors,
+          touched,
+          isSubmitting,
+          setFieldValue,
+          submitForm,
+        }) => {
+          const selectColor = (e) => {
+            setFieldValue('Color', e.target.dataset.value);
+            submitForm();
+          };
 
-      {hasSize && (
-        <SizeSelector
-          activeVariant={activeVariant}
-          values={product.options.Size}
-        />
-      )}
+          const customSelectChangeHandler = (e, val) => {
+            setFieldValue(val, e.target.value);
+            submitForm();
+          };
+
+          return (
+            <StyledForm id={product.id}>
+              {hasColors && (
+                <ColorSwatch
+                  selectColor={selectColor}
+                  activeVariant={activeVariant}
+                  values={product.options.Color}
+                />
+              )}
+
+              <CustomSelectContainer>
+                {hasSize && (
+                  <CustomSelect
+                    updateValues={customSelectChangeHandler}
+                    values={product.options.Size}
+                    value="Size"
+                  />
+                )}
+
+                {hasWaist && (
+                  <CustomSelect
+                    updateValues={customSelectChangeHandler}
+                    values={product.options.Waist}
+                    value="Waist"
+                  />
+                )}
+
+                {hasLength && (
+                  <CustomSelect
+                    updateValues={customSelectChangeHandler}
+                    values={product.options.Length}
+                    value="Length"
+                  />
+                )}
+
+                {hasFit && (
+                  <CustomSelect
+                    updateValues={customSelectChangeHandler}
+                    values={product.options.Fit}
+                    value="Fit"
+                  />
+                )}
+                {/* <pre>{JSON.stringify(values, null, 2)}</pre>
+              <pre>
+                {JSON.stringify(activeVariant.selectedOptions, null, 2)}
+              </pre> */}
+              </CustomSelectContainer>
+            </StyledForm>
+          );
+        }}
+      </Formik>
     </Card>
   );
 };

@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { COLORS, remHelper } from '../styles/utilities';
 
-const ColorSwatch = ({ values, activeVariant, handleSelectColor }) => {
-  const [activeColor, setActiveColor] = useState(
-    activeVariant.selectedOptions.Color
-  );
+const ColorSwatch = ({ values, activeVariant, selectColor }) => {
+  const [activeColor, setActiveColor] = useState('');
+
+  useEffect(() => {
+    setActiveColor(activeVariant.selectedOptions.Color);
+  }, [activeVariant]);
 
   const SwatchContainer = styled.ul`
     display: flex;
@@ -45,11 +47,7 @@ const ColorSwatch = ({ values, activeVariant, handleSelectColor }) => {
       {values.map((value) => {
         return (
           <li key={value}>
-            <ColorLabel
-              htmlFor={value}
-              onClick={() => handleSelectColor(value)}
-              isSelected={activeColor === value}
-            >
+            <ColorLabel htmlFor={value} isSelected={activeColor === value}>
               <DefaultInput
                 type="radio"
                 name={value}
@@ -58,7 +56,12 @@ const ColorSwatch = ({ values, activeVariant, handleSelectColor }) => {
                 aria-checked={activeColor === value}
               />
 
-              <CustomInput color={value} isSelected={activeColor === value} />
+              <CustomInput
+                data-value={value}
+                color={value}
+                onClick={(e) => selectColor(e)}
+                isSelected={activeColor === value}
+              />
             </ColorLabel>
           </li>
         );
