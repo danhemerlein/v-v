@@ -1,6 +1,6 @@
 import sendQuery from './index';
 
-export default async function getAllProducts(collectionHandle) {
+export async function getAllProducts(collectionHandle) {
   const query = `
         {
           collectionByHandle(handle: \"${collectionHandle}\") {
@@ -81,5 +81,37 @@ export default async function getAllProducts(collectionHandle) {
 
     return products;
   }
+  return [];
+}
+
+export async function getCollection(collectionHandle) {
+  const query = `
+  {
+    collections(first:5) {
+      edges {
+        node {
+          title
+          handle
+          image {
+            src
+          }
+        }
+      }
+    }
+  }
+  `;
+
+  const { data } = await sendQuery(query);
+
+  if (data && data.data) {
+    const collections = data?.data?.collections?.edges.map(({ node }) => {
+      const col = { ...node };
+
+      return col;
+    });
+
+    return collections.filter((col) => col.handle === collectionHandle);
+  }
+
   return [];
 }

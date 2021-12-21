@@ -9,4 +9,6 @@ export const COLORS = {
   Yellow: '#FEC109',
   'Dark Wash': '#2F3676',
   'Light Wash': '#00BCD3',
+  White: '#fff',
+  Black: '#000',
 };

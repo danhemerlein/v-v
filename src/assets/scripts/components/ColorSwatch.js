@@ -10,18 +10,22 @@ const ColorSwatch = ({ values, activeVariant, selectColor }) => {
   }, [activeVariant]);
 
   const SwatchContainer = styled.ul`
-    display: flex;
-    list-style: none;
-    justify-content: center;
     width: 100%;
+    display: flex;
     flex-wrap: wrap;
+    justify-content: center;
+    list-style: none;
   `;
 
   const ColorLabel = styled.label`
     display: inline-flex;
     align-items: center;
     cursor: pointer;
-    margin: ${remHelper[8]};
+    margin: ${remHelper[4]};
+
+    ${above.mobile`
+      margin: ${remHelper[8]};
+    `};
   `;
 
   const DefaultInput = styled.input`
@@ -32,8 +36,8 @@ const ColorSwatch = ({ values, activeVariant, selectColor }) => {
 
   const CustomInput = styled.div`
     position: relative;
-    width: ${remHelper[8]};
-    height: ${remHelper[8]};
+    width: ${remHelper[12]};
+    height: ${remHelper[12]};
     border-radius: 100%;
     background: ${({ color }) => COLORS[color]} no-repeat;
 

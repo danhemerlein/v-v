@@ -1,18 +1,44 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { above, remHelper } from '../styles/utilities';
+import { above, COLORS, remHelper } from '../styles/utilities';
 import ProductCard from './ProductCard';
 import Select from './Select';
 
 const Wrapper = styled.main`
-  padding: ${remHelper[16]};
+  padding: 0 ${remHelper[16]} ${remHelper[16]} ${remHelper[16]};
+`;
+
+const Headline = styled.h1`
+  color: ${COLORS.White};
+  background: ${COLORS.Black};
+  margin-bottom: ${remHelper[16]};
+`;
+
+const Hero = styled.div`
+  width: 100%;
+  height: 420px;
+  background-position: center;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+
+  ${({ src }) => `background-image: url(${src});`};
+
+  width: 100%;
 `;
 
 const SortContainer = styled.div`
   display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  margin-top: ${remHelper[16]};
 
   ${above.mobile`
-    justify-content: flex-end;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+    align-items: center;
   `};
 `;
 
@@ -29,9 +55,13 @@ const ProductGrid = styled.ul`
 
 const StyledParagaph = styled.p`
   margin-top: ${remHelper[16]};
+
+  ${above.mobile`
+    margin-top: 0;
+  `};
 `;
 
-const PLP = ({ products }) => {
+const PLP = ({ products, collection }) => {
   const [activeProducts, setActiveProducts] = useState(products);
 
   const handleSortChange = (e) => {
@@ -100,6 +130,14 @@ const PLP = ({ products }) => {
 
   return (
     <Wrapper>
+      <Hero src={collection.image.src}>
+        <Headline>
+          &nbsp;
+          {collection.title}
+          &nbsp;
+        </Headline>
+      </Hero>
+
       <SortContainer>
         <Select onChange={handleSortChange}>
           <option value="">sort by</option>
@@ -108,9 +146,9 @@ const PLP = ({ products }) => {
           <option value="low-high">Price Low to High</option>
           <option value="high-low">Price High to Low</option>
         </Select>
-      </SortContainer>
 
-      <StyledParagaph>{activeProducts.length} results</StyledParagaph>
+        <StyledParagaph>{activeProducts.length} results</StyledParagaph>
+      </SortContainer>
 
       <ProductGrid>
         {activeProducts.map((product) => {

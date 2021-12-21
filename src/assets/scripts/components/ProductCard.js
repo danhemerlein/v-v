@@ -79,20 +79,12 @@ const ProductCard = ({ product }) => {
 
       <Formik
         initialValues={product.variants[0].selectedOptions}
-        // validationSchema={schema[0]}
         onSubmit={(values, { setSubmitting }) => {
           selectVariant(values);
           setSubmitting(false);
         }}
       >
-        {({
-          values,
-          errors,
-          touched,
-          isSubmitting,
-          setFieldValue,
-          submitForm,
-        }) => {
+        {({ values, setFieldValue, submitForm }) => {
           const selectColor = (e) => {
             setFieldValue('Color', e.target.dataset.value);
             submitForm();
@@ -146,11 +138,11 @@ const ProductCard = ({ product }) => {
                   />
                 )}
 
-                <pre>{JSON.stringify(values, null, 2)}</pre>
+                {/* <pre>{JSON.stringify(values, null, 2)}</pre>
 
                 <pre>
                   {JSON.stringify(activeVariant.selectedOptions, null, 2)}
-                </pre>
+                </pre> */}
               </CustomSelectContainer>
             </StyledForm>
           );
