@@ -72,7 +72,7 @@ export async function getAllProducts(collectionHandle) {
 
         product.priceRange = [
           prices.sort()[0],
-          prices.sort()[prices.sort().length - 1],
+          prices.sort()[prices.length - 1],
         ];
 
         product.defaultOrder = key;

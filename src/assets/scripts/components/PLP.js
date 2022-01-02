@@ -24,8 +24,6 @@ const Hero = styled.div`
   align-items: flex-end;
 
   ${({ src }) => `background-image: url(${src});`};
-
-  width: 100%;
 `;
 
 const SortContainer = styled.div`
