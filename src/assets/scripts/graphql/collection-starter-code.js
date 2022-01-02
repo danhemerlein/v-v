@@ -41,7 +41,7 @@ export async function getAllProducts(collectionHandle) {
   const { data } = await sendQuery(query);
   if (data && data.data) {
     const products = data?.data?.collectionByHandle?.products?.edges.map(
-      ({ node }) => {
+      ({ node }, key) => {
         const product = { ...node };
 
         product.variants = node.variants.edges.map(({ node }) => ({ ...node }));
@@ -74,6 +74,8 @@ export async function getAllProducts(collectionHandle) {
           prices.sort()[0],
           prices.sort()[prices.sort().length - 1],
         ];
+
+        product.defaultOrder = key;
 
         return product;
       }

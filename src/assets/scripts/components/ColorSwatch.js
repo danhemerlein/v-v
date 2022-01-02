@@ -66,10 +66,10 @@ const ColorSwatch = ({ values, activeVariant, selectColor }) => {
     position: absolute;
     z-index: 2;
 
-    ${({ isSelected, color }) =>
+    ${({ isSelected }) =>
       isSelected &&
       `
-        box-shadow: 0 0 0 2px white, 0 0 0 4px ${COLORS[color]};
+        box-shadow: 0 0 0 2px white, 0 0 0 3px ${COLORS.Black};
       `}
   `;
 

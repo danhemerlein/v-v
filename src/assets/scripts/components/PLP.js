@@ -64,9 +64,17 @@ const StyledParagaph = styled.p`
 const PLP = ({ products, collection }) => {
   const [activeProducts, setActiveProducts] = useState(products);
 
+  console.log(products);
+
   const handleSortChange = (e) => {
     if (e.target.value === '') {
-      setActiveProducts([...products]);
+      const sorted = activeProducts.sort((a, b) => {
+        return a.defaultOrder - b.defaultOrder;
+      });
+
+      console.log(sorted);
+
+      setActiveProducts([...sorted]);
     }
 
     if (e.target.value === 'a-z') {
